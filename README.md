@@ -1,122 +1,46 @@
-# OS key mapping node module [![Build Status](https://travis-ci.org/Microsoft/node-native-keymap.svg?branch=master)](https://travis-ci.org/Microsoft/node-native-keymap)
-Returns what characters are produced by pressing keys with different modifiers on the current system keyboard layout.
+# A nodejs module to Generate Poly Line for POD
 
-## Installing
-
-* On Debian-based Linux: `sudo apt-get install libx11-dev libxkbfile-dev`
-* On Red Hat-based Linux: `sudo yum install libx11-devel.x86_64 # or .i686`
-* On FreeBSD: `sudo pkg install libX11`
+## Building
 
 ```sh
-npm install native-keymap
+npm run install
 ```
 
-## Using
+const autopolyline = require('./build/Release/autopolyline');
 
-```javascript
-var keymap = require('native-keymap');
-console.log(keymap.getKeyMap());
-```
+const obj = new autopolyline.AutoPolyLine(100, 40);
 
-Example output when using standard US keyboard layout:
-```
-[
-  ...
-  { key_code: 'VKEY_OEM_2',
-    value: '/',
-    withShift: '?',
-    withAltGr: '',
-    withShiftAltGr: '' },
-  { key_code: 'VKEY_OEM_3',
-    value: '`',
-    withShift: '~',
-    withAltGr: '',
-    withShiftAltGr: '' },
-  { key_code: 'VKEY_OEM_4',
-    value: '[',
-    withShift: '{',
-    withAltGr: '',
-    withShiftAltGr: '' },
-  { key_code: 'VKEY_OEM_5',
-    value: '\\',
-    withShift: '|',
-    withAltGr: '',
-    withShiftAltGr: '' },
-  { key_code: 'VKEY_OEM_6',
-    value: ']',
-    withShift: '}',
-    withAltGr: '',
-    withShiftAltGr: '' },
-  { key_code: 'VKEY_OEM_7',
-    value: '\'',
-    withShift: '"',
-    withAltGr: '',
-    withShiftAltGr: '' },
-  { key_code: 'VKEY_OEM_102',
-    value: '\\',
-    withShift: '|',
-    withAltGr: '',
-    withShiftAltGr: '' } ]
-```
+obj.InitMap();
 
-Example output when using German (Swiss) keyboard layout:
-```
-[
-  ...
-  { key_code: 'VKEY_OEM_2',
-    value: '§',
-    withShift: '°',
-    withAltGr: '',
-    withShiftAltGr: '' },
-  { key_code: 'VKEY_OEM_3',
-    value: '',
-    withShift: '¨!',
-    withAltGr: ']',
-    withShiftAltGr: '' },
-  { key_code: 'VKEY_OEM_4',
-    value: '\'',
-    withShift: '?',
-    withAltGr: '',
-    withShiftAltGr: '' },
-  { key_code: 'VKEY_OEM_5',
-    value: '´ä',
-    withShift: 'à',
-    withAltGr: '{',
-    withShiftAltGr: '' },
-  { key_code: 'VKEY_OEM_6',
-    value: '',
-    withShift: '^`',
-    withAltGr: '',
-    withShiftAltGr: '' },
-  { key_code: 'VKEY_OEM_7',
-    value: '~ö',
-    withShift: 'é',
-    withAltGr: '',
-    withShiftAltGr: '' },
-  { key_code: 'VKEY_OEM_8',
-    value: '$',
-    withShift: '£',
-    withAltGr: '}',
-    withShiftAltGr: '' },
-  { key_code: 'VKEY_OEM_102',
-    value: '<',
-    withShift: '>',
-    withAltGr: '\\',
-    withShiftAltGr: '' } ]
-```
+//	重设地图尺寸,改变尺寸时调用
+//	参数:
+//		width, height:	地图尺寸
 
-## Supported OSes
- * linux (X11)
- * windows
- * mac
- * freebsd
+//	初始化地图,放置或修改障碍物矩形之前调用
+obj.InitSize(200, 80);
 
-## Developing
- * only tested on `node v6.x`
- * `npm install -g node-gyp`
- * `node-gyp configure` (for debugging use `node-gyp configure -d`)
- * `node-gyp build`
- * `npm test` (for debugging change `index.js` to load the node module from the `Debug` folder and press `F5`)
+obj.InitMap();
+
+//	设置阻隔边框参数
+//	参数:
+//		width: 阻隔边框宽度
+//		resistance: 边框阻力系数
+obj.SetBorder(20, 2);
+
+//	增加障碍物矩形
+//	参数:
+//		x, y: 矩形左上角位置
+//		width, height: 矩形尺寸
+//		resistance:	障碍物矩形阻力系数
+obj.AddObstacleRect(20, 5, 20, 15, 0);
+
+//	创建折线,并根据折线自动更新阻隔边框参数
+//	参数:
+//		x1, y1: 起始点
+//		x2, y2: 结束点
+//	返回值:
+//		折线点的个数
+var poly = obj.CreatePolyLine(5, 3, 95, 35);
 
 ## License
-[MIT](https://github.com/Microsoft/node-native-keymap/blob/master/License.txt)
+[MIT]
