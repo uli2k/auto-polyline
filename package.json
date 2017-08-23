@@ -1,0 +1,16 @@
+{
+  "author": {
+    "name": "Tony Robotics"
+  },
+  "dependencies": {},
+  "description": "Generate Poly Line for POD",
+  "devDependencies": {},
+  "gypfile": true,
+  "license": "MIT",
+  "main": "index.js",
+  "name": "auto-polyline",
+  "scripts": {
+    "install": "node-gyp rebuild"
+  },
+  "version": "1.0.0"
+}
