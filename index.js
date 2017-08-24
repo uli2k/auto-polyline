@@ -1,1 +1,1 @@
-console.log(require('path').relative('.', __dirname));
+module.exports = require('./build/Release/autopolyline.node');
